@@ -1,0 +1,5 @@
+__pycache__
+fastapi-virt
+.DS_Store
+ENV_DIR
+fastapi-env
