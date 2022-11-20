@@ -6,11 +6,13 @@
     Any version earlier than 3.10 will raise syntax errors.
 2.  Make sure pipx is installed, or pip3 if that is not possible.
 3.  Install virtualenv
-4.  Clone this git project - top level directory of fastapi_poc 
+4.  Install sqlite (sqlite3 - only if you're working on a demo project
+    and don't have access to an Archiver with a Postgers DB)
+5.  Clone this git project - top level directory of fastapi_poc 
     (e.g. `git clone git@gitlab.intradyn.com:mkorte/fastapi_poc.git`)
-5.  Cd to fastapi_poc
-6.  Create a virtualenv for this project.  Run `virtualenv fastapi-env`.
-7.  Install the requirements: `pipx install -r requirements.txt` or `pip3 install -r requirements.txt`.  
+6.  Cd to fastapi_poc
+7.  Create a virtualenv for this project.  Run `virtualenv fastapi-env`.
+8.  Install the requirements: `pipx install -r requirements.txt` or `pip3 install -r requirements.txt`.  
     If you get a notification of any missing requirements, try running `pipx install -r requirements2.txt`.  
     That is more complete and was generated based on a pip-freeze of my local virtualenv instance, 
     but it does include indirect requirements, not only direct requirements.
