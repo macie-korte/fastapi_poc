@@ -5,7 +5,8 @@ from sqlalchemy import Column, Integer, String, Boolean
 class Fetcher(Base):
     __tablename__ = "fetchers"
 
-    confname = Column(String, primary_key=True)
+    fetcherid = Column(Integer, primary_key=True)
+    confname = Column(String, nullable=False)
     server = Column(String, nullable=False)
     description = Column(String, nullable=False)
     userid = Column(String)

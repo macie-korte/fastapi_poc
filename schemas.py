@@ -1,8 +1,8 @@
 from pydantic import BaseModel, Field
 
 
-class Fetcher(BaseModel):
-    confname: str = Field(alias='configuration_name')
+class FetcherCreate(BaseModel):
+    confname: str = Field(alias='name')
     server: str | None
     description: str | None
     userid: str | None = Field(alias='username')
@@ -21,3 +21,6 @@ class Fetcher(BaseModel):
     class Config:
         orm_mode = True
         allow_population_by_field_name = True
+
+class FetcherRead(FetcherCreate):
+    fetcherid: int = Field(alias='id')
