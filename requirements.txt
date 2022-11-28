@@ -1,6 +1,8 @@
 fastapi
 uvicorn
 pydantic
+pytest
+requests
 sqlalchemy
 django
 psycopg2-binary  #psycopg2 requires deps it doesn't install itself?  See https://stackoverflow.com/questions/11618898/pg-config-executable-not-found.  libpq-dev and/or postgresql-devel but when I try to pipx install those they fail

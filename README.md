@@ -28,4 +28,8 @@
     any of the APIs from an address like http://127.0.0.1:8000/fetcher/ from your own code.
 
 
+## Other Helpful Info ##
 
+* Run `sqlite3 sqlapp.db` to run ad hoc SQL queries.  This will eventually be replaced with Postgres.
+* If `source fastapi-env/bin/active` does not work, then cd up a directory and try `source fastapi_poc/fastapi-env/bin/active` from there.
+* Run tests by cding to your fastapi_poc directory and running `python -m pytest test_main.py -vv`
