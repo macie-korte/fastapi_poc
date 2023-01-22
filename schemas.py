@@ -56,3 +56,6 @@ class FetcherRead(FetcherCreate):
     schedules: List[FetcherScheduleRead] = []
     uidvalidkey: int | None = Field(alias='uid_validity_key')
 
+class BatchFetcherIds(BaseModel):
+    ids: List[int] = []
+

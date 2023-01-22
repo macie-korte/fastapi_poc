@@ -4,6 +4,7 @@ the API calls.
 """
 
 from fastapi import FastAPI, HTTPException, Depends, status, Response
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm  import Session
 from sqlalchemy.exc import NoResultFound
 
@@ -13,6 +14,18 @@ import models
 from database import get_db_session
 
 app = FastAPI()
+
+# Cross-origin resource sharing: allow requests from other hosts & ports
+origins = [
+    "http://localhost:4200"  # Our Angular POC port
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 ################################## Fetchers ###################################
 # Create a new fetcher
@@ -246,6 +259,63 @@ def delete_fetcher(fetcherid: int, db: Session = Depends(get_db_session)):
     db.query(models.Fetcher).filter(models.Fetcher.fetcherid == fetcherid).delete()
     db.commit()
     return deletable_fetcher  # to show the API user what was deleted for success messages & such.
+
+
+##################### Customer Batch Fetcher Operations #######################
+# a batch operation call for restarting fetchers.
+@app.post("/fetcher:restart/", description="""
+    Restarts any listed fetchers
+
+    Silently ignores any fetchers in the list which are disabled, not running or
+    which do not exist.
+
+    If successful, the response body is empty.
+    """)
+def restart_fetchers(fetcher_ids: schemas.BatchFetcherIds, db: Session = Depends(get_db_session)):
+    # TODO: fill out later once on a real running system.
+    pass
+
+# a batch operation call for activating and deactivating fetchers.
+@app.post("/fetcher:activate/", description="""
+    Activates any active fetchers in the list
+
+    Silently ignores any fetchers in the list which are already active or
+    which do not exist.
+
+    If successful, the response body is empty.
+    """)
+def activate_fetchers(fetcher_ids: schemas.BatchFetcherIds, db: Session = Depends(get_db_session)):
+    db.query(models.Fetcher).filter(
+        models.Fetcher.fetcherid.in_(fetcher_ids.ids)).update({models.Fetcher.active: True})
+
+    db.commit()
+
+@app.post("/fetcher:deactivate/", description="""
+    Deactivates any active fetchers in the list
+
+    Silently ignores any fetchers in the list which are already disabled or
+    which do not exist.
+
+    If successful, the response body is empty.
+    """)
+def deactivate_fetchers(fetcher_ids: schemas.BatchFetcherIds, db: Session = Depends(get_db_session)):
+    db.query(models.Fetcher).filter(
+        models.Fetcher.fetcherid.in_(fetcher_ids.ids)).update({models.Fetcher.active: False})
+
+    db.commit()
+
+# a batch operation to call for deleting fetchers.
+@app.post("/fetcher:delete/", description="""
+    Deletes many fetchers by fetcher ID.
+
+    Silently ignores any fetchers in the list which are already deleted or
+    never existed in the first place.
+
+    If successful, the response body is empty.
+    """)
+def delete_fetchers(fetcher_ids: schemas.BatchFetcherIds, db: Session = Depends(get_db_session)):
+    db.query(models.Fetcher).filter(models.Fetcher.fetcherid.in_(fetcher_ids.ids)).delete()
+    db.commit()
 
 
 ############################# Fetcher Schedules ###############################
